@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Unlicense
 
-cmake_minimum_required( VERSION 3.22 )
+cmake_minimum_required( VERSION 3.25 )
 
 message( STATUS "Using CMake ${CMAKE_VERSION}" )
 
@@ -14,24 +14,26 @@ endif()
 # Add paths to modules
 list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/" )
 
+# (optionally) load variables from a config file
+set(ConfigFilePath ".cmakeconfig" CACHE STRING "The Path to the Config file! If this is not set, no config file is assumed to exist!")
+if(NOT (${ConfigFilePath} STREQUAL ""))
+    message(STATUS "Reading Config File ${ConfigFilePath}")
+    include(Utils)
+    ReadConfigFile(${ConfigFilePath})
+endif()
+
 # Turn on link time optimization for everything
 set( CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON )
 
 # Output compile commands to compile_commands.json (for debugging CMake issues)
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
-# Build universal lib on macOS
-# Note that CMAKE_OSX_ARCHITECTURES must be set before project().
-if ( APPLE )
-    set( CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "" )
-endif()
-
 # Main project information
-project( GDExtensionTemplate
+project( LeapGodot
     LANGUAGES
         CXX
     VERSION
-        0.1.0
+        1.0.0
 )
 
 # Create our library
@@ -39,15 +41,12 @@ add_library( ${PROJECT_NAME} SHARED )
 
 target_compile_features( ${PROJECT_NAME}
     PRIVATE
-        cxx_std_17
+        cxx_std_23
 )
 
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
 # For macOS, we build a universal library (both arm64 and x86_64).
 set( LIB_ARCH ${CMAKE_SYSTEM_PROCESSOR} )
-if ( APPLE )
-    set( LIB_ARCH "universal" )
-endif()
 
 # LIB_DIR is where the actual library ends up. This is used in both the build directory and the
 # install directory and needs to be consistent with the paths in the gdextension file.
@@ -80,11 +79,21 @@ include( CompilerWarnings )
 # Create and include version info file from git
 include( GitVersionInfo )
 
-add_subdirectory( src )
+target_sources( ${PROJECT_NAME}
+        PRIVATE
+            "src/GDExample.cpp"
+            "src/RegisterExtension.cpp"
+        )
 
-# Install library and extension file in ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}
-set( INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}/" )
+target_include_directories( ${PROJECT_NAME}
+        PRIVATE
+            "${CMAKE_SOURCE_DIR}/include"
+        )
 
+if(NOT DEFINED INSTALL_DIR)
+    # Install library and extension file in ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}
+    set( INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}/" )
+endif()
 message( STATUS "Install directory: ${INSTALL_DIR}")
 
 install( TARGETS ${PROJECT_NAME}
@@ -115,7 +124,7 @@ endif()
 
 set( GODOT_CPP_SYSTEM_HEADERS ON CACHE BOOL "" FORCE )
 
-add_subdirectory( extern/godot-cpp )
+add_subdirectory(extern)
 
 set_target_properties( godot-cpp
     PROPERTIES

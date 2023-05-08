@@ -1,2 +1,11 @@
-CMakeLists.txt.user
+# clion specific
+.idea
+
+# cmake specific
+build
+/*-build
+/*-install
+
+# general
+.env
 .vscode
