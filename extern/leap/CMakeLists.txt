@@ -42,7 +42,7 @@ set_target_properties("LeapMotionSDK"
 
 target_compile_features(${CMAKE_PROJECT_NAME}
         PRIVATE
-            std_cxx_11)
+            cxx_std_11)
 
 message(STATUS "Define the Libraries and copy the DLL's")
 
@@ -55,5 +55,12 @@ set_target_properties(LeapMotionSDK
 configure_file("${PROJECT_SOURCE_DIR}/lib/${ARCHITECTURE}/Leap.dll" # input file
         "${CMAKE_BINARY_DIR}/" # output dir
         COPYONLY)
+
+if(DEFINED INSTALL_DIR)
+    install(
+            FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ARCHITECTURE}/Leap.dll
+            DESTINATION ${INSTALL_DIR}/leap
+    )
+endif()
 
 message(STATUS "Successfully build the Leap-SDK!")

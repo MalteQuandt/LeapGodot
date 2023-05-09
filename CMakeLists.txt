@@ -44,6 +44,17 @@ target_compile_features( ${PROJECT_NAME}
         cxx_std_23
 )
 
+target_sources( ${PROJECT_NAME}
+        PRIVATE
+        "src/GDExample.cpp"
+        "RegisterExtension.cpp"
+        )
+
+target_include_directories( ${PROJECT_NAME}
+        PRIVATE
+        "${CMAKE_SOURCE_DIR}/include"
+        )
+
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
 # For macOS, we build a universal library (both arm64 and x86_64).
 set( LIB_ARCH ${CMAKE_SYSTEM_PROCESSOR} )
@@ -60,10 +71,14 @@ set( BUILD_OUTPUT_DIR "${PROJECT_BINARY_DIR}/${PROJECT_NAME}/" )
 
 set_target_properties( ${PROJECT_NAME}
     PROPERTIES
-        CXX_VISIBILITY_PRESET hidden
-        VISIBILITY_INLINES_HIDDEN true
-        RUNTIME_OUTPUT_DIRECTORY "${BUILD_OUTPUT_DIR}/${LIB_DIR}"
-        LIBRARY_OUTPUT_DIRECTORY "${BUILD_OUTPUT_DIR}/${LIB_DIR}"
+        CXX_VISIBILITY_PRESET
+            hidden
+        VISIBILITY_INLINES_HIDDEN
+            true
+        RUNTIME_OUTPUT_DIRECTORY
+            "${BUILD_OUTPUT_DIR}/${LIB_DIR}"
+        LIBRARY_OUTPUT_DIRECTORY
+            "${BUILD_OUTPUT_DIR}/${LIB_DIR}"
 )
 
 if( NOT DEFINED CMAKE_DEBUG_POSTFIX )
@@ -78,17 +93,6 @@ include( CompilerWarnings )
 
 # Create and include version info file from git
 include( GitVersionInfo )
-
-target_sources( ${PROJECT_NAME}
-        PRIVATE
-            "src/GDExample.cpp"
-            "src/RegisterExtension.cpp"
-        )
-
-target_include_directories( ${PROJECT_NAME}
-        PRIVATE
-            "${CMAKE_SOURCE_DIR}/include"
-        )
 
 if(NOT DEFINED INSTALL_DIR)
     # Install library and extension file in ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}
@@ -134,4 +138,5 @@ set_target_properties( godot-cpp
 target_link_libraries( ${PROJECT_NAME}
     PRIVATE
         godot-cpp
+        LeapMotionSDK
 )

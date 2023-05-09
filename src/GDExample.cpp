@@ -16,10 +16,11 @@ void godot::GDExample::_process(double delta) {
   this->time_passed += delta;
 
   const double scale {100.0};
+  const double offset {.0};
 
   godot::Vector2 new_position = Vector2(
-      static_cast<real_t>(scale + (10.0 * Math::sin(this->time_passed * 2.0))),
-      static_cast<real_t>(scale + (10.0 * Math::cos(time_passed * 1.5))));
+      static_cast<real_t>(offset + (10.0 * Math::sin(this->time_passed * scale))),
+      static_cast<real_t>(offset + (10.0 * Math::sin(this->time_passed * scale))));
 
   set_position(new_position);
 }

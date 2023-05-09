@@ -8,6 +8,8 @@
 
 #include <GDExample.hpp>
 
+using namespace godot;
+
 /// @file
 /// Register our classes with Godot.
 
@@ -18,22 +20,22 @@ namespace
     /// @param p_level the level being initialized by Godot
     ///
     /// @see GDExtensionInit
-    void initializeExtension( godot::ModuleInitializationLevel p_level )
+    void initializeExtension( ModuleInitializationLevel p_level )
     {
-        if ( p_level != godot::MODULE_INITIALIZATION_LEVEL_SCENE )
+        if ( p_level != MODULE_INITIALIZATION_LEVEL_SCENE )
         {
             return;
         }
 
-        godot::ClassDB::register_class<godot::GDExample>();
+        ClassDB::register_class<godot::GDExample>();
     }
 
     /// @brief Called by Godot to let us do any cleanup.
     ///
     /// @see GDExtensionInit
-    void uninitializeExtension( godot::ModuleInitializationLevel p_level )
+    void uninitializeExtension( ModuleInitializationLevel p_level )
     {
-        if ( p_level != godot::MODULE_INITIALIZATION_LEVEL_SCENE )
+        if ( p_level != MODULE_INITIALIZATION_LEVEL_SCENE )
         {
             return;
         }
@@ -58,13 +60,13 @@ extern "C"
     {
 
         {
-            godot::GDExtensionBinding::InitObject init_obj( p_interface, p_library,
+            GDExtensionBinding::InitObject init_obj( p_interface, p_library,
                                                             r_initialization );
 
             init_obj.register_initializer( initializeExtension );
             init_obj.register_terminator( uninitializeExtension );
             init_obj.set_minimum_library_initialization_level(
-                godot::MODULE_INITIALIZATION_LEVEL_SCENE );
+                MODULE_INITIALIZATION_LEVEL_SCENE );
 
             return init_obj.init();
         }
