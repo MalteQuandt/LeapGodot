@@ -4,6 +4,18 @@ cmake_minimum_required( VERSION 3.25 )
 
 message( STATUS "Using CMake ${CMAKE_VERSION}" )
 
+# LIB_ARCH is the architecture being built. It is set to the build system's architecture.
+# For macOS, we build a universal library (both arm64 and x86_64).
+set( LIB_ARCH ${CMAKE_SYSTEM_PROCESSOR} )
+
+# Add paths to modules
+list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/" )
+
+# LIB_DIR is where the actual library ends up. This is used in both the build directory and the
+# install directory and needs to be consistent with the paths in the gdextension file.
+#   e.g. linux.release.x86_64 = "lib/Linux-x86_64/libGDExtensionTemplate.so"
+set( LIB_DIR "lib/${CMAKE_SYSTEM_NAME}-${LIB_ARCH}" )
+
 set(BOOST_ROOT "C:\\Boost" CACHE STRING "The root of the Boost library")
 
 # boost options
@@ -20,8 +32,6 @@ if ( EXISTS "${LOC_PATH}" )
     message( FATAL_ERROR "You cannot build in the source directory. Please use a build subdirectory." )
 endif()
 
-# Add paths to modules
-list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/" )
 
 # (optionally) load variables from a config file
 set(ConfigFilePath ".cmakeconfig" CACHE STRING "The Path to the Config file! If this is not set, no config file is assumed to exist!")
@@ -64,16 +74,9 @@ target_sources( ${PROJECT_NAME}
 target_include_directories( ${PROJECT_NAME}
         PRIVATE
             "${CMAKE_SOURCE_DIR}/include"
+            "${BOOST_ROOT}/include"
         )
 
-# LIB_ARCH is the architecture being built. It is set to the build system's architecture.
-# For macOS, we build a universal library (both arm64 and x86_64).
-set( LIB_ARCH ${CMAKE_SYSTEM_PROCESSOR} )
-
-# LIB_DIR is where the actual library ends up. This is used in both the build directory and the
-# install directory and needs to be consistent with the paths in the gdextension file.
-#   e.g. linux.release.x86_64 = "lib/Linux-x86_64/libGDExtensionTemplate.so"
-set( LIB_DIR "lib/${CMAKE_SYSTEM_NAME}-${LIB_ARCH}" )
 
 message( STATUS "Building ${PROJECT_NAME} for ${LIB_ARCH} on ${CMAKE_SYSTEM_NAME}")
 
