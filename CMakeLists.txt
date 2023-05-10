@@ -46,13 +46,15 @@ target_compile_features( ${PROJECT_NAME}
 
 target_sources( ${PROJECT_NAME}
         PRIVATE
-        "src/GDExample.cpp"
-        "RegisterExtension.cpp"
+            "src/leap/LeapController.cpp"
+            "src/audio/AudioController.cpp"
+            "src/GDExample.cpp"
+            "RegisterExtension.cpp"
         )
 
 target_include_directories( ${PROJECT_NAME}
         PRIVATE
-        "${CMAKE_SOURCE_DIR}/include"
+            "${CMAKE_SOURCE_DIR}/include"
         )
 
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
