@@ -4,6 +4,15 @@ cmake_minimum_required( VERSION 3.25 )
 
 message( STATUS "Using CMake ${CMAKE_VERSION}" )
 
+set(BOOST_ROOT "C:\\Boost" CACHE STRING "The root of the Boost library")
+
+# boost options
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADING ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
+find_package(Boost REQUIRED COMPONENTS system)
+
 # Require out-of-source builds
 file( TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH )
 
@@ -141,4 +150,6 @@ target_link_libraries( ${PROJECT_NAME}
     PRIVATE
         godot-cpp
         LeapMotionSDK
+        OSCPP
+        ${Boost_LIBRARIES}
 )

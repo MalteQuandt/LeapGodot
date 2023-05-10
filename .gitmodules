@@ -1,3 +1,7 @@
 [submodule "extern/godot-cpp"]
 	path = extern/godot-cpp
 	url = https://github.com/godotengine/godot-cpp.git
+[submodule "oscpp"]
+	path = extern/oscpp/source
+	url = https://github.com/kaoskorobase/oscpp.git
+	branch = master
