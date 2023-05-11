@@ -1,1 +1,6 @@
+# Please put the location where the lib folder should be copied into.
+# Has to be a folder/subfolder with a godot project!
+# syntax:
+# INSTALL_DIR=D:\Godot\GodotGame\game\gdextension
+
 INSTALL_DIR=D:\Godot\GodotGame\game\gdextension

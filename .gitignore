@@ -3,8 +3,11 @@
 
 # cmake specific
 build
+build-release
+build-debug
 /*-build
 /*-install
+
 
 # general
 .env
