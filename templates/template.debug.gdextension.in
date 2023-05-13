@@ -3,7 +3,4 @@
 entry_symbol = "GDExtensionInit"
 
 [libraries]
-windows.x86_64 = "lib/Windows-AMD64/${LIB_PREFIX}${PROJECT_NAME}-d.dll"
-
-[dependencies]
-windows.x86_64 = "${INSTALL_DIR}/leap/Leap.dll"
+windows.x86_64 = "lib/Windows-AMD64/${LIB_PREFIX}${PROJECT_NAME}.dll"

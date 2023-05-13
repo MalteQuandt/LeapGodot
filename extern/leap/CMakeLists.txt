@@ -19,7 +19,7 @@ endif()
 
 option(ARCHITECTURE_IS_X64 "Is the system that this project is build on x64?" ON)
 
-if(ARCHITECTURE_IS_X64)
+if(ARCHITECTURE_IS_X64 OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "AMD64")
     message(STATUS "build the system using x64 libraries")
     set(ARCHITECTURE "x64")
 else()
@@ -56,10 +56,14 @@ configure_file("${PROJECT_SOURCE_DIR}/lib/${ARCHITECTURE}/Leap.dll" # input file
         "${CMAKE_BINARY_DIR}/" # output dir
         COPYONLY)
 
+if(NOT DEFINED LIB_DIR)
+    set( LIB_DIR "lib/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}" )
+endif()
+
 if(DEFINED INSTALL_DIR)
     install(
             FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ARCHITECTURE}/Leap.dll
-            DESTINATION ${INSTALL_DIR}/leap
+            DESTINATION ${INSTALL_DIR}/${LIB_DIR}
     )
 endif()
 

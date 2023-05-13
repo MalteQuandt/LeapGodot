@@ -2,6 +2,16 @@
 
 cmake_minimum_required( VERSION 3.25 )
 
+# Main project information
+project( LeapGodot
+        LANGUAGES
+            CXX
+        VERSION
+            1.0.0
+        DESCRIPTION
+            "Godot Nodes that can receive data from a leap motion controller, and one that is able to send osc data to a sound dome."
+        )
+
 message( STATUS "Using CMake ${CMAKE_VERSION}" )
 
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
@@ -47,13 +57,6 @@ set( CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON )
 # Output compile commands to compile_commands.json (for debugging CMake issues)
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
-# Main project information
-project( LeapGodot
-    LANGUAGES
-        CXX
-    VERSION
-        1.0.0
-)
 
 # Create our library
 add_library( ${PROJECT_NAME} SHARED )

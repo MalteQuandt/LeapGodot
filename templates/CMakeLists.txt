@@ -2,8 +2,8 @@
 
 add_custom_target(templates
         SOURCES
-        template.debug.gdextension.in
-        template.release.gdextension.in
+            template.debug.gdextension.in
+            template.release.gdextension.in
         )
 
 add_dependencies(${PROJECT_NAME} templates)
