@@ -1,5 +1,9 @@
 #pragma once
 
-class AudioController {
-  // todo: implement the interface
-};
+#include <godot_cpp/classes/node.hpp>
+
+namespace godot::audio {
+  class AudioController : Node{
+
+  };
+}

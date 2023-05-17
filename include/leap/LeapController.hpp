@@ -29,11 +29,15 @@ public:
 
   // Properties
   // ----------
+  /**
+   * Check if the leap motion hardware is connected and available
+   */
+  bool get_isConnected [[nodiscard]] () const;
 
-  // Signals:
-  // --------
-
-  // controller connection signals:
+  /**
+   * @brief Check whethere the leap motion service is running and connected to this application.
+   */
+   bool get_isServiceConnected [[nodiscard]] () const;
 
 protected:
   /**
@@ -48,5 +52,17 @@ private:
   // if the leap motion controller is currently connected, always set to true before the first frame.
   // therefore the validity of this assumption has to be checked before doing any other calculations!
   bool isConnected{true};
+  bool serviceAvailable{true};
+  // information about the last processed frame
+  Leap::Frame currentlyProcessedFrame{};
+
+  // Private Methods
+  // ---------------
+
+  /**
+   * @brief Process a frame
+   * @param frame The frame to process
+   */
+  void processNextFrame(const Leap::Frame frame);
 };
 } // namespace godot::leap
