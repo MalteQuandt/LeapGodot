@@ -29,6 +29,7 @@ public:
 
   // Properties
   // ----------
+  
   /**
    * Check if the leap motion hardware is connected and available
    */

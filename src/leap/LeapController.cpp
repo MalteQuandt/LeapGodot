@@ -87,6 +87,7 @@ namespace godot::leap {
     ADD_SIGNAL(MethodInfo("incorrect_device_count",
                           PropertyInfo(Variant::OBJECT, "node"),
                           PropertyInfo(Variant::INT, "devices_count")));
+
     // frame signals
     ADD_SIGNAL(MethodInfo("frame_received",
                           PropertyInfo(Variant::OBJECT, "node")));

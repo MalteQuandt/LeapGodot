@@ -1,7 +1,6 @@
 // Copied from godot-cpp/test/src and modified.
 #include <RegisterExtension.hpp>
 
-#include <GDExample.hpp>
 #include <audio/AudioController.hpp>
 #include <leap/LeapController.hpp>
 
@@ -19,10 +18,9 @@ void godot::initializeExtension(ModuleInitializationLevel p_level) {
   if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
     return;
   }
-
-  ClassDB::register_class<godot::GDExample>();
+  // register the nodes
   ClassDB::register_class<godot::leap::LeapController>();
-  //        ClassDB::register_class<godot::audio::AudioController>();
+  ClassDB::register_class<godot::audio::AudioController>();
 }
 
 /// @brief Called by Godot to let us do any cleanup.

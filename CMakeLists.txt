@@ -12,6 +12,8 @@ project( LeapGodot
             "Godot Nodes that can receive data from a leap motion controller, and one that is able to send osc data to a sound dome."
         )
 
+set(CMAKE_COMPILE_WARNING_AS_ERROR OFF) # disable the 'bad' paradigm
+
 message( STATUS "Using CMake ${CMAKE_VERSION}" )
 
 # LIB_ARCH is the architecture being built. It is set to the build system's architecture.
@@ -42,7 +44,6 @@ if ( EXISTS "${LOC_PATH}" )
     message( FATAL_ERROR "You cannot build in the source directory. Please use a build subdirectory." )
 endif()
 
-
 # (optionally) load variables from a config file
 set(ConfigFilePath ".cmakeconfig" CACHE STRING "The Path to the Config file! If this is not set, no config file is assumed to exist!")
 if(NOT (${ConfigFilePath} STREQUAL ""))
@@ -70,7 +71,7 @@ target_sources( ${PROJECT_NAME}
         PRIVATE
             "src/leap/LeapController.cpp"
             "src/audio/AudioController.cpp"
-            "src/GDExample.cpp"
+            "src/osc/OSCLeapClient.cpp"
             "RegisterExtension.cpp"
         )
 

@@ -4,7 +4,6 @@
 
 using namespace ctag;
 using namespace ctag::osc;
-using namespace ctag::util;
 
 using namespace boost::asio;
 using namespace boost::asio::ip;
@@ -13,12 +12,13 @@ using namespace OSCPP::Client;
 
 // osc leap client class
 
-OSCLeapClient::OSCLeapClient(const CLOptions &clo):
+OSCLeapClient::OSCLeapClient(const std::string ip, const unsigned int port):
     buffer{new char[kMaxPacketSize]},
-    address{clo.getAddress()},
     io_service{},
     socket(io_service),
-    endpoint(address::from_string(std::get<0>(address)), std::get<1>(address)) {
+    ip{ip},
+    port{port},
+    endpoint(address::from_string(this->ip), this->port) {
     // send the "connect" message, and therefore register with the server:
     this->connect();
 }
@@ -31,10 +31,14 @@ void OSCLeapClient::sendPacket(const OSCPP::Client::Packet& packet) {
     this->sendMessage(packet.size());
 }
 
+void OSCLeapClient::clear() {
+    ::operator delete(this->buffer);
+}
+
 OSCLeapClient::~OSCLeapClient() {
     // send the "disconnect" message, and close the socket connection:
     this->disconnect();
-    ::operator delete(this->buffer);
+    this->clear();
 }
 
 void OSCLeapClient::connect() {

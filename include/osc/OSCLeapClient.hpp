@@ -3,7 +3,6 @@
 #include <chrono>
 
 #include <osc/OSCLeapClient.hpp>
-#include <util/command_line_options.hpp>
 #include <oscpp/client.hpp>
 
 #include <boost/asio.hpp>
@@ -12,7 +11,7 @@
 namespace ctag::osc {
 
     // Max size of an osc bundle/message etc
-    constexpr size_t kMaxPacketSize = 65536u;
+    constexpr size_t kMaxPacketSize = 8096u; // smol buffer
 
     /**
      * Simple OSC-Client that sends the leap motion data to the osc-server
@@ -22,9 +21,10 @@ namespace ctag::osc {
         /**
          * @brief Generate a new leap client that automatically connects to the defined server.
          *
-         * @param clo The command line options container
+         * @param ip The IP to send to, default: 127.0.0.1
+         * @param port The Port ot send to, default: 9000
          */
-        explicit OSCLeapClient(const ctag::util::CLOptions& clo);
+        explicit OSCLeapClient(const std::string ip = "127.0.0.1", const unsigned int port=9000);
 
         // Public Interface
         // ----------------
@@ -42,6 +42,11 @@ namespace ctag::osc {
          * @return The package to send
          */
          OSCPP::Client::Packet prepare();
+
+         /**
+          * @brief Free the internal buffer
+          */
+         void clear();
 
         /**
          * @brief Terminate the connection to the OSC-Server
@@ -68,7 +73,8 @@ namespace ctag::osc {
 
         // Properties
 
-        Address address;
+        const std::string ip;
+        const unsigned int port;
         void * buffer;
         boost::asio::io_service io_service;
         boost::asio::ip::udp::socket socket;
