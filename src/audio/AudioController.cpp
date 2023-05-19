@@ -7,7 +7,7 @@ using namespace godot::audio;
 using namespace ctag;
 
 AudioController::AudioController()
-    : port{9001}, ip{"127.0.0.1"}, oscClient{new osc::OSCLeapClient{ip, port}} {
+    : port{9001}, ip{"127.0.0.1"}, oscClient{new ctag::osc::OSCLeapClient{ip, port}} {
 }
 
 void AudioController::_process(double delta) {
@@ -18,16 +18,15 @@ bool AudioController::setVolumeLevel(unsigned int channel, float level) const {
   if (channel > 16 or channel == 0 or level > 1.0f or level < 0.0f) {
     return false;
   } else {
-    this->oscClient->sendPacket(
-        this->oscClient
-            ->prepare()
+    this->oscClient->
             // set the path
-            .openMessage("/dome/level",
-                         OSCPP::Tags::float32() + OSCPP::Tags::int32())
+            message("/dome/level")
             // send the arguments
-            .int32(static_cast<int32_t>(channel))
-            .float32(level)
-            .closeMessage());
+            << static_cast<int>(channel)
+            << static_cast<float>(level)
+            // send the arguments
+          << ::osc::EndMessage;
+    this->oscClient->send();
     return true;
   }
 }
@@ -35,12 +34,15 @@ bool AudioController::setAzimuth(unsigned int channel, unsigned int azimuth) con
   if (azimuth > 360 or channel > 16 or channel == 0) {
     return false;
   } else {
-    this->oscClient->sendPacket(
-        this->oscClient->prepare()
-            .openMessage("/dome/azimuth", 2 * OSCPP::Tags::int32())
-            .int32(static_cast<int32_t>(channel))
-            .int32(static_cast<int32_t>(azimuth))
-            .closeMessage());
+    this->oscClient->
+        // set the path
+        message("/dome/azimuth")
+        // send the arguments
+        << static_cast<int>(channel)
+        << static_cast<int>(azimuth)
+        // send the arguments
+        << ::osc::EndMessage;
+    this->oscClient->send();
     return true;
   }
 }
@@ -48,12 +50,15 @@ bool AudioController::setElevation(unsigned int channel, signed int elevation) c
   if (channel > 16 or channel == 0 or elevation < -30 or elevation > 30) {
     return false;
   } else {
-    this->oscClient->sendPacket(
-        this->oscClient->prepare()
-            .openMessage("/dome/elevation", 2 * OSCPP::Tags::int32())
-            .int32(static_cast<int32_t>(channel))
-            .int32(static_cast<int32_t>(elevation))
-            .closeMessage());
+    this->oscClient->
+        // set the path
+        message("/dome/elevation")
+        // send the arguments
+        << static_cast<int>(channel)
+        << static_cast<int>(elevation)
+        // send the arguments
+        << ::osc::EndMessage;
+    this->oscClient->send();
     return true;
   }
 }
@@ -61,12 +66,15 @@ bool AudioController::setSpread(unsigned int channel, unsigned int spread) const
   if (channel > 16 or channel == 0 or spread > 100) {
     return false;
   } else {
-    this->oscClient->sendPacket(
-        this->oscClient->prepare()
-            .openMessage("/dome/spread", 2 * OSCPP::Tags::int32())
-            .int32(static_cast<int32_t>(channel))
-            .int32(static_cast<int32_t>(spread))
-            .closeMessage());
+    this->oscClient->
+        // set the path
+        message("/dome/spread")
+        // send the arguments
+        << static_cast<int>(channel)
+        << static_cast<int>(spread)
+        // send the arguments
+        << ::osc::EndMessage;
+    this->oscClient->send();
     return true;
   }
 }
@@ -75,19 +83,22 @@ bool AudioController::setDistance(unsigned int channel, float distance) const {
   if (channel == 0 or channel > 16) {
     return false;
   } else {
-    this->oscClient->sendPacket(
-        this->oscClient->prepare()
-            .openMessage("/dome/distance", OSCPP::Tags::int32() + OSCPP::Tags::float32())
-            .int32(static_cast<int32_t>(channel))
-            .float32(distance)
-            .closeMessage());
+    this->oscClient->
+        // set the path
+        message("/dome/distance")
+        // send the arguments
+        << static_cast<int>(channel)
+        << static_cast<float>(distance)
+        // send the arguments
+        << ::osc::EndMessage;
+    this->oscClient->send();
     return true;
   }
 }
 
 void AudioController::rebuild() {
   this->oscClient.reset();
-  this->oscClient = std::make_unique<osc::OSCLeapClient>(this->ip, this->port);
+  this->oscClient = std::make_unique<ctag::osc::OSCLeapClient>(this->ip, this->port);
 }
 
 void AudioController::set_port(unsigned int port) {

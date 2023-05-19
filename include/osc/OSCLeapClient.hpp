@@ -2,16 +2,18 @@
 
 #include <chrono>
 
-#include <osc/OSCLeapClient.hpp>
-#include <oscpp/client.hpp>
+#include <osc/OscOutboundPacketStream.h>
+#include <ip/UdpSocket.h>
 
-#include <boost/asio.hpp>
+#include <osc/OSCLeapClient.hpp>
 
 
 namespace ctag::osc {
 
     // Max size of an osc bundle/message etc
-    constexpr size_t kMaxPacketSize = 8096u; // smol buffer
+    constexpr size_t kMaxPacketSize {8096u}; // smol buffer
+    constexpr unsigned int DEFAULT_PORT {9000};
+    constexpr std::string DEFAULT_IP {"127.0.0.1"};
 
     /**
      * Simple OSC-Client that sends the leap motion data to the osc-server
@@ -24,24 +26,23 @@ namespace ctag::osc {
          * @param ip The IP to send to, default: 127.0.0.1
          * @param port The Port ot send to, default: 9000
          */
-        explicit OSCLeapClient(const std::string ip = "127.0.0.1", const unsigned int port=9000);
+        explicit OSCLeapClient(const std::string ip = DEFAULT_IP,
+                               const unsigned int port = DEFAULT_PORT);
 
         // Public Interface
         // ----------------
 
         /**
-         * @brief Prepare a package and send it over the network to the osc-server
+         * @brief Construct an osc message
          *
-         * @param packet The packet to send
+         * @param path The path to send to
          */
-        void sendPacket(const OSCPP::Client::Packet& packet);
+        ::osc::OutboundPacketStream& message(std::string path);
 
         /**
-         * @brief Prepare a packet
-         *
-         * @return The package to send
+         * @brief Send the osc package that is currently contained within
          */
-         OSCPP::Client::Packet prepare();
+        void send();
 
          /**
           * @brief Free the internal buffer
@@ -54,13 +55,6 @@ namespace ctag::osc {
         ~OSCLeapClient();
 
     private:
-        /**
-         * @brief Send a message over the network using udp, of the data that is contained in the current buffer
-         *
-         * @param packet_size The size of the osc packet to send
-         */
-        boost::system::error_code sendMessage(size_t packet_size);
-
         /**
          * @brief Connect to a server over a socket connection
          */
@@ -75,22 +69,8 @@ namespace ctag::osc {
 
         const std::string ip;
         const unsigned int port;
-        void * buffer;
-        boost::asio::io_service io_service;
-        boost::asio::ip::udp::socket socket;
-        boost::asio::ip::udp::endpoint endpoint;
+        char * buffer;
+        ::osc::OutboundPacketStream packetStream;
+        UdpTransmitSocket socket;
     };
-
-    /**
-     * @brief Get the current unix timestamp as milliseconds
-     *         The standard duration in ms can be replaced with any duration type
-     *
-     * @tparam d The duration type to return
-     *
-     * @return The unix timestamp cast to the std::chrono duration specified in the function parameter
-     */
-     template<class d=std::chrono::milliseconds>
-     unsigned long long int getUnixTimestamp() {
-        return std::chrono::duration_cast<d>(std::chrono::system_clock::now().time_since_epoch()).count();
-     }
 }

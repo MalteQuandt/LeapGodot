@@ -28,15 +28,6 @@ list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/" )
 #   e.g. linux.release.x86_64 = "lib/Linux-x86_64/libGDExtensionTemplate.so"
 set( LIB_DIR "lib/${CMAKE_SYSTEM_NAME}-${LIB_ARCH}" )
 
-set(BOOST_ROOT "C:\\Boost" CACHE STRING "The root of the Boost library")
-
-# boost options
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_MULTITHREADING ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-
-find_package(Boost REQUIRED COMPONENTS system)
-
 # Require out-of-source builds
 file( TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH )
 
@@ -78,7 +69,6 @@ target_sources( ${PROJECT_NAME}
 target_include_directories( ${PROJECT_NAME}
         PRIVATE
             "${CMAKE_SOURCE_DIR}/include"
-            "${BOOST_ROOT}/include"
         )
 
 
@@ -157,6 +147,5 @@ target_link_libraries( ${PROJECT_NAME}
     PRIVATE
         godot-cpp
         LeapMotionSDK
-        OSCPP
-        ${Boost_LIBRARIES}
+        OSCPack
 )
