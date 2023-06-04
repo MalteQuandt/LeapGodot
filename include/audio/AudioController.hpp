@@ -19,14 +19,15 @@ class AudioController : public Node {
    */
   void _process(double delta) override;
 
-  void set_port(unsigned int port);
+  void set_port(unsigned int newPort);
   unsigned int get_port();
 
-  void set_ip(godot::String ip);
+  void set_ip(godot::String newIP);
   godot::String get_ip();
 
   bool send(unsigned int channel = 1,
             godot::Dictionary data = godot::Dictionary()) const;
+
   bool send_caresian(unsigned int channel = 1, godot::Dictionary = godot::Dictionary()) const;
 
   /**

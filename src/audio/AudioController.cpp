@@ -101,14 +101,14 @@ void AudioController::rebuild() {
   this->oscClient = std::make_unique<ctag::osc::OSCLeapClient>(this->ip, this->port);
 }
 
-void AudioController::set_port(unsigned int port) {
-  this->port = port;
+void AudioController::set_port(unsigned int newPort) {
+  this->port = newPort;
   this->rebuild();
 }
 unsigned int AudioController::get_port() { return this->port; }
 
-void AudioController::set_ip(godot::String ip) {
-  this->ip = std::string{ip.ascii().get_data()};
+void AudioController::set_ip(godot::String newIP) {
+  this->ip = std::string{newIP.ascii().get_data()};
   this->rebuild();
 }
 godot::String AudioController::get_ip() { return Variant(this->ip.c_str()); }
@@ -121,7 +121,7 @@ bool AudioController::send(unsigned int channel, godot::Dictionary data) const {
     const auto keys {data.keys()};
 
     // iterate over the keys in the dictionary
-    for(auto i{0ull}; i < keys.size(); i++) {
+    for(int i{0ull}; i < keys.size(); i++) {
       // fetch the current key
       const auto key = keys[static_cast<int>(i)].stringify();
       // check if the key matches one of the supported ones!
@@ -143,45 +143,6 @@ bool AudioController::send(unsigned int channel, godot::Dictionary data) const {
     }
     return true;
   }
-}
-
-// todo: continue writing this method:
-bool AudioController::send_caresian(unsigned int channel, godot::Dictionary data) const {
-  const bool condition {channel > 16 or channel == 0 };
-  // if the channel is valid, validate the request
-  if(condition) {
-    const float x {0.0f};
-    const float y {0.0f};
-    const float z {0.0f};
-    const godot::Vector3 to{0.0f, 0.0f, 0.0f};
-    // fetch the keys
-    const auto keys {data.keys()};
-    // iterate over the input keys
-    for(auto i{0ull}; i < keys.size();i++) {
-      // fetch the current key
-      const auto key {keys[static_cast<int>(i)]};
-      // check the key against the expected values:
-      if (key == String("volume")) {
-        this->setVolumeLevel(channel, static_cast<float>(data[key]));
-      }
-      else if(key == String("x")) {
-        // todo:
-      }
-      else if(key == String("y")) {
-        // todo:
-      }
-      else if(key == String("z")) {
-        // todo:
-      }
-      else if(key == String("to")) {
-        // todo:
-      }
-      else if(key == String("distance")) {
-        this->setDistance(channel, static_cast<float>(data[key]));
-      }
-    }
-  }
-  return condition;
 }
 
 void AudioController::_bind_methods() {
