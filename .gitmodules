@@ -1,6 +1,7 @@
 [submodule "extern/godot-cpp"]
 	path = extern/godot-cpp
 	url = https://github.com/godotengine/godot-cpp.git
+	branch = 4.0
 [submodule "oscpack"]
 	path = extern/oscpack
 	url = https://github.com/MalteQuandt/OSCPack-Modern.git

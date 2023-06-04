@@ -1,5 +1,7 @@
 #include <leap/LeapController.hpp>
 
+using namespace godot;
+
 namespace godot::leap {
 
   LeapController::LeapController() : controller{} {
@@ -17,7 +19,11 @@ namespace godot::leap {
     return this->serviceAvailable;
   }
 
-  void LeapController::_process(double delta) {
+  godot::leap::Frame* LeapController::get_currentFrame() const {
+    return this->currentFrameContainer.get();
+  }
+
+  void LeapController::process(double delta) {
     // check if a device is currently connected
     const bool isCurrentlyConnected{controller.isConnected()};
     const bool isServiceConnected{controller.isServiceConnected()};
@@ -58,22 +64,30 @@ namespace godot::leap {
         auto frameToProcess {this->controller.frame(history)};
         // set the new currently-in-process frame
         this->currentlyProcessedFrame = frameToProcess;
+        // set the value of the frame node
+        this->currentFrameContainer = std::make_shared<godot::leap::Frame>(this->currentlyProcessedFrame);
         this->processNextFrame(frameToProcess);
-        // signal that a new frame has been processed!
-        emit_signal("frame_received", this);
       }
     }
+
+  }
+
+  void LeapController::_process(double delta) {
+    this->process(delta);
   }
 
   void LeapController::processNextFrame(const Leap::Frame frame) {
-    // todo: gestures and stuff like that
+    // signal that a new frame has been processed!
+    emit_signal("frame_received", this);
   }
 
   void LeapController::_bind_methods() {
-    using namespace godot;
+
     // property definitions
     ClassDB::bind_method(D_METHOD("get_isConnected"), &LeapController::get_isConnected);
     ClassDB::bind_method(D_METHOD("get_isServiceConnected"), &LeapController::get_isServiceConnected);
+    ClassDB::bind_method(D_METHOD("get_currentFrame"), &LeapController::get_currentFrame);
+    ClassDB::bind_method(D_METHOD("process"), &LeapController::_process);
 
     // signal definitions
     ADD_SIGNAL(MethodInfo("leap_service_disconnected",
@@ -91,6 +105,7 @@ namespace godot::leap {
     // frame signals
     ADD_SIGNAL(MethodInfo("frame_received",
                           PropertyInfo(Variant::OBJECT, "node")));
+    // todo: remove this signal
     ADD_SIGNAL(MethodInfo("palm_position",
                           PropertyInfo(Variant::OBJECT, "node"),
                           PropertyInfo(Variant::VECTOR3, "palm_position")));

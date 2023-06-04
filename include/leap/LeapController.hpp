@@ -3,6 +3,7 @@
 #include <godot_cpp/classes/Node.hpp>
 
 #include <Leap.h>
+#include <leap/helper/Frame.hpp>
 
 namespace godot::leap {
 class LeapController : public Node {
@@ -27,6 +28,12 @@ public:
    */
   void _process(double delta) override;
 
+  /**
+   * @brief Helper function to call the connection details from the
+   * @param delta The delta time since the last frame
+   */
+  void process(double delta);
+
   // Properties
   // ----------
   
@@ -39,6 +46,11 @@ public:
    * @brief Check whethere the leap motion service is running and connected to this application.
    */
    bool get_isServiceConnected [[nodiscard]] () const;
+
+  /**
+   * @brief Fetch the currently set frame
+   */
+   godot::leap::Frame* get_currentFrame[[nodiscard]] () const;
 
 protected:
   /**
@@ -56,6 +68,7 @@ private:
   bool serviceAvailable{true};
   // information about the last processed frame
   Leap::Frame currentlyProcessedFrame{};
+  std::shared_ptr<godot::leap::Frame> currentFrameContainer{nullptr};
 
   // Private Methods
   // ---------------

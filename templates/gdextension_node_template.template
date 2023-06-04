@@ -1,0 +1,19 @@
+#pragma once
+
+#include <godot_cpp/classes/node.hpp>
+
+namespace godot::leap {
+  class ClassName : public Node {
+    // establish hierarchy
+    GDCLASS(ClassName, Node);
+  public:
+    explicit ClassName();
+
+    // todo: Define the public interface
+
+  protected:
+    static void _bind_methods();
+  private:
+    // private properties
+  };
+}

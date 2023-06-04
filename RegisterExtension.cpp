@@ -3,6 +3,7 @@
 
 #include <audio/AudioController.hpp>
 #include <leap/LeapController.hpp>
+#include <leap/helper/Frame.hpp>
 
 using namespace godot;
 
@@ -20,6 +21,10 @@ void godot::initializeExtension(ModuleInitializationLevel p_level) {
   }
   // register the nodes
   ClassDB::register_class<godot::leap::LeapController>();
+  ClassDB::register_class<godot::leap::InteractionBox>();
+  ClassDB::register_class<godot::leap::Frame>();
+//  ClassDB::register_class<godot::leap::Hand>();
+//  ClassDB::register_class<godot::leap::HandList>();
   ClassDB::register_class<godot::audio::AudioController>();
 }
 

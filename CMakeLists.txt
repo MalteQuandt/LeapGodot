@@ -60,9 +60,17 @@ target_compile_features( ${PROJECT_NAME}
 
 target_sources( ${PROJECT_NAME}
         PRIVATE
+        # leap motion
             "src/leap/LeapController.cpp"
+            "src/leap/helper/InteractionBox.cpp"
+            "src/leap/helper/Frame.cpp"
+            "src/leap/helper/hands/Hand.cpp"
+            "src/leap/helper/hands/HandList.cpp"
+        # audio
             "src/audio/AudioController.cpp"
+        # osc client
             "src/osc/OSCLeapClient.cpp"
+        # godot bindings
             "RegisterExtension.cpp"
         )
 
