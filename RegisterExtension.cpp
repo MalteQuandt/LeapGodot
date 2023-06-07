@@ -5,6 +5,9 @@
 #include <leap/LeapController.hpp>
 #include <leap/helper/Frame.hpp>
 
+#include <leap/helper/gestures/Gesture.h>
+#include <leap/helper/gestures/GestureList.h>
+
 using namespace godot;
 
 /// @file
@@ -23,8 +26,8 @@ void godot::initializeExtension(ModuleInitializationLevel p_level) {
   ClassDB::register_class<godot::leap::LeapController>();
   ClassDB::register_class<godot::leap::InteractionBox>();
   ClassDB::register_class<godot::leap::Frame>();
-//  ClassDB::register_class<godot::leap::Hand>();
-//  ClassDB::register_class<godot::leap::HandList>();
+  ClassDB::register_class<godot::leap::Hand>();
+  ClassDB::register_class<godot::leap::HandList>();
   ClassDB::register_class<godot::audio::AudioController>();
 }
 

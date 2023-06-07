@@ -7,6 +7,7 @@
 #include <leap/helper/hands/Hand.hpp>
 #include <leap/helper/hands/HandList.hpp>
 #include <leap/helper/InteractionBox.hpp>
+#include <leap/helper/gestures/Gesture.h>
 
 #include <godot_cpp/variant/variant.hpp>
 #include <godot_cpp/classes/object.hpp>
@@ -39,6 +40,9 @@ private:
   // pointers
   std::shared_ptr<godot::leap::InteractionBox> box{nullptr};
   std::shared_ptr<godot::leap::HandList> handList{nullptr};
+
+  std::vector<godot::leap::Hand> handVector{};
+  std::vector<godot::leap::Gesture> gestureVector{};
 };
 
 } // namespace godot

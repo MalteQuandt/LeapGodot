@@ -64,8 +64,12 @@ target_sources( ${PROJECT_NAME}
             "src/leap/LeapController.cpp"
             "src/leap/helper/InteractionBox.cpp"
             "src/leap/helper/Frame.cpp"
+        # hands
             "src/leap/helper/hands/Hand.cpp"
             "src/leap/helper/hands/HandList.cpp"
+        # gestures
+            "src/leap/helper/gestures/Gesture.cpp"
+            "src/leap/helper/gestures/GestureList.cpp"
         # audio
             "src/audio/AudioController.cpp"
         # osc client

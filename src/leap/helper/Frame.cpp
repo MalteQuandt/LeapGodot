@@ -30,7 +30,6 @@ HandList* Frame::hands() {
 }
 
 godot::leap::InteractionBox* Frame::interactionBox() {
-//  return InteractionBox{this->frame.interactionBox()};
   if(this->box == nullptr) {
     this->box = std::make_shared<godot::leap::InteractionBox>(this->frame.interactionBox());
   }
@@ -44,7 +43,7 @@ void Frame::_bind_methods() {
   ClassDB::bind_method(D_METHOD("currentFramesPerSecond"), &Frame::currentFramesPerSecond);
   ClassDB::bind_method(D_METHOD("id"), &Frame::id);
   ClassDB::bind_method(D_METHOD("isValid"), &Frame::isValid);
-//  ClassDB::bind_method(D_METHOD("hand"), &Frame::hand);
-//  ClassDB::bind_method(D_METHOD("hands"), &Frame::hands);
+  ClassDB::bind_method(D_METHOD("hand"), &Frame::hand);
+  ClassDB::bind_method(D_METHOD("hands"), &Frame::hands);
   ClassDB::bind_method(D_METHOD("interactionBox"), &Frame::interactionBox);
 }

@@ -8,8 +8,11 @@
 #include <leap/helper/hands/HandList.hpp>
 #include <leap/helper/hands/Hand.hpp>
 
+#include <ForwardDeclarations.h>
+
 
 namespace godot::leap {
+
 class HandList : public Node {
 GDCLASS(HandList, Node);
 public:
@@ -26,9 +29,10 @@ public:
 protected:
   static void _bind_methods();
 private:
-  Leap::HandList handlist;
+  Leap::HandList handlist{};
   // pointer
   std::vector<std::shared_ptr<godot::leap::Hand>> handVector{};
+
 };
 
 } // namespace godot

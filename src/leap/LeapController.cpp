@@ -50,7 +50,7 @@ namespace godot::leap {
     }
     // check how many devices are connected:
     const int devices{controller.devices().count()};
-    if(devices != 1) {
+    if(devices > 1) {
       emit_signal("incorrect_device_count", this, devices);
     }
 
@@ -65,7 +65,7 @@ namespace godot::leap {
         // set the new currently-in-process frame
         this->currentlyProcessedFrame = frameToProcess;
         // set the value of the frame node
-        this->currentFrameContainer = std::make_shared<godot::leap::Frame>(this->currentlyProcessedFrame);
+//        this->currentFrameContainer = std::make_shared<godot::leap::Frame>(this->currentlyProcessedFrame);
         this->processNextFrame(frameToProcess);
       }
     }
@@ -78,7 +78,14 @@ namespace godot::leap {
 
   void LeapController::processNextFrame(const Leap::Frame frame) {
     // signal that a new frame has been processed!
-    emit_signal("frame_received", this);
+    emit_signal("frame_received", this->currentFrameContainer.get());
+
+    // Process gestures
+    // ----------------
+    const auto gestures {frame.gestures()};
+//    if(not gestures.isEmpty()) {
+//      emit_signal("leap_gesture_detected", this->currentFrameContainer.get());
+//    }
   }
 
   void LeapController::_bind_methods() {
@@ -101,13 +108,11 @@ namespace godot::leap {
     ADD_SIGNAL(MethodInfo("incorrect_device_count",
                           PropertyInfo(Variant::OBJECT, "node"),
                           PropertyInfo(Variant::INT, "devices_count")));
+    // Gesture Signals
+    // ---------------
 
     // frame signals
     ADD_SIGNAL(MethodInfo("frame_received",
                           PropertyInfo(Variant::OBJECT, "node")));
-    // todo: remove this signal
-    ADD_SIGNAL(MethodInfo("palm_position",
-                          PropertyInfo(Variant::OBJECT, "node"),
-                          PropertyInfo(Variant::VECTOR3, "palm_position")));
   }
 }

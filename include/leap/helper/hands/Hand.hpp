@@ -5,13 +5,15 @@
 
 #include <Leap.h>
 
+#include <ForwardDeclarations.h>
+
 namespace godot::leap {
 class Hand : public Node {
   GDCLASS(Hand, Node);
 
 public:
   explicit Hand();
-  explicit Hand(Leap::Hand hand) : hand{hand} {}
+  explicit Hand(Leap::Hand hand): hand{hand} {}
   // Leap Methods:
   // -------------
   float confidence();
@@ -37,7 +39,6 @@ public:
 
 protected:
   static void _bind_methods();
-
 private:
   Leap::Hand hand;
 };

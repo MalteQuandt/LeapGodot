@@ -24,7 +24,4 @@ Clone this Module with the recurse command:
 | Library                                                                                          | Purpose                                                                     |
 |--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | [LeapMotionSDK/V2.3.1](https://developer-archive.leapmotion.com/documentation/v2/cpp/index.html) | Establish connection to the Leap Motion Device and collect the data from it |
-| [oscpp](https://github.com/kaoskorobase/oscpp)                                                   | Send the Leap Motion Data over the network encoded in the TUOI-Protocol!    |
-| [Boost](https://www.boost.org/)                                                                  | For simple UDP communication                                                |
 | [Godot Template](https://github.com/nathanfranke/gdextension)                                    | Template for building Godot Extension Projects using C++                    |
-| [Find Boost CMake Script](https://gist.github.com/thiagowfx/970e3931387ed7db9a39709a8a130ee9)    | Find (and install if necessary) Boost on any system                         |

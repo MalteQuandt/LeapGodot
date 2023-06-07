@@ -5,10 +5,12 @@
 
 #include <Leap.h>
 
+#include <ForwardDeclarations.h>
 // for more information, view https://developer-archive.leapmotion.com/documentation/v2/cpp/api/Leap.InteractionBox.html
 // this is effectively the same interface
 
 namespace godot::leap {
+
 class InteractionBox : public Node {
     GDCLASS(InteractionBox, Node);
   public:
